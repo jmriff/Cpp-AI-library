@@ -10,7 +10,7 @@
 #include <random>
 #include <string>
 
-#include "util/activations.hpp"
+#include "activations.hpp"
 
 using namespace std;
 using namespace activation;
