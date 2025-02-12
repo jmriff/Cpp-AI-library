@@ -5,11 +5,12 @@ library.
 
 * The AI.hpp and AI.cpp files are buggy, and not working at the moment, if you see the issue, I would be glad if someone could send me the fixed files
 
-Supported activations:
-tanh        (Hyperbolic tangent)
-relu        (Rectified linear unit)
-sigmoid
-fsigmoid    (Fast sigmoid)
+| Supported activations               |
+|-------------------------------------|
+| tanh        (Hyperbolic tangent)    |
+| relu        (Rectified linear unit) |
+| sigmoid                             |
+| fsigmoid    (Fast sigmoid)          |
 
 For this test, I am using the XOR dataset (down below) and a intel i3-12th generation processor, with the example.cpp file. The lower the score the better (the score is really just the error of the network)
 | Epochs        | Speed (seconds)               | Score    |
