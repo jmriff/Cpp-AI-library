@@ -28,6 +28,6 @@ sudo cp build/libAI.so /usr/local/lib/
 sudo ldconfig
 echo "Done"
 
-echo
+clear
 
 echo "Installation complete!"
