@@ -24,4 +24,4 @@ Speed and accuracy (Single-thread on my machine with 2, 5, 1 network all tanh ac
 
 Compile the code (example.cpp):
 
-g++ example.cpp *.cpp -o example
+g++ *.cpp -o example
