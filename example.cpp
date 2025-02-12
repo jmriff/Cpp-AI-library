@@ -39,7 +39,7 @@ int main()
         // Start timer before the training loop
         auto start = chrono::high_resolution_clock::now();
 
-        nn.run_round(10000000, dataset);  // Run the network training
+        nn.run_round(100000, dataset);  // Run the network training
 
         // End timer after the training loop
         auto end = chrono::high_resolution_clock::now();
