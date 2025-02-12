@@ -30,7 +30,8 @@ int main()
         // Create the network
         NeuralNetwork nn(AI_settings);
         nn.addLayer(2, "tanh");
-        nn.addLayer(5, "tanh");
+        nn.addLayer(10, "tanh");
+        nn.addLayer(10, "tanh");
         nn.addLayer(1, "tanh");
 
         dataset_t dataset = createDataset(X, y, 0.5, 0.5);
