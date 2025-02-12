@@ -3,7 +3,7 @@ C++ AI Library
 This library help create simple AIs with many different activations, and train them. After some testing, I found this library is faster than a C version of the same
 library.
 
-*The AI.hpp and AI.cpp files are buggy (The reason it is nn.run_round(...) instead of ai.train(...)), and not working at the moment, if you see the issue, I would be glad if you could send me the fixed files
+* The AI.hpp and AI.cpp files are buggy, and not working at the moment, if you see the issue, I would be glad if someone could send me the fixed files
 
 Supported activations:
 tanh        (Hyperbolic tangent)
@@ -31,7 +31,7 @@ XOR dataset:
 Installation
 ------------
 
-To install library, just run the install.sh script, and it will compile the file and install it on to your system, so when you use it, just add -lAI as a compiler flag.
+To install library, just run the install.sh script or Linux, and the install.bat script for Windows, and it will compile the file and install it on to your system, so when you use it, just add -lAI as a compiler flag.
 
 Example compilation:
 g++ example.cpp -o example -lAI
