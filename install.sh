@@ -16,17 +16,17 @@ mkdir -p build
 cd build
 echo "Done"
 
-# Run cmake, make, and install the project
+# Run cmake, then make the files
 echo "Installing..."
 cmake ..
 make
+cd ..
+
+# Install the files
 sudo cp ./*.hpp /usr/local/include/
 sudo cp build/libAI.so /usr/local/lib/
 sudo ldconfig
 echo "Done"
-
-# Go back to the previous directory
-cd ..
 
 echo
 
