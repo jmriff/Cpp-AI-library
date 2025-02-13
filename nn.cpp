@@ -62,9 +62,9 @@ double NeuralNetwork::backpropagate(vector<double> X, vector<double> y)
     // Perform forward pass to get predictions
     vector<double> output = forward(X);
 
-    // Compute error (mean squared error)
+    // Compute error using Mean Squared Error (MSE)
     for (size_t i = 0; i < output.size(); i++)
-        error += abs(output[i] - y[i]);
+        error += (output[i] - y[i]) * (output[i] - y[i]);
 
     // Initialize deltas for each layer
     vector<vector<double>> deltas(layers.size());
@@ -76,7 +76,8 @@ double NeuralNetwork::backpropagate(vector<double> X, vector<double> y)
     for (size_t i = 0; i < layers[last_layer].size(); i++)
     {
         double output_error = output[i] - y[i];
-        deltas[last_layer][i] = output_error * derivatives[last_layer](layers[last_layer][i].connections[0]); // Using derivative of activation
+        // Use derivative of activation function
+        deltas[last_layer][i] = output_error * derivatives[last_layer](layers[last_layer][i].connections[0]);
     }
 
     // Compute deltas for hidden layers
@@ -86,28 +87,35 @@ double NeuralNetwork::backpropagate(vector<double> X, vector<double> y)
         {
             double hidden_error = 0.0;
             for (size_t j = 0; j < layers[layer + 1].size(); j++)
-                hidden_error += deltas[layer + 1][j] * layers[layer + 1][j].connections[0];        // Use connections as weights
-            deltas[layer][i] = hidden_error * derivatives[layer](layers[layer][i].connections[0]); // Use derivative of activation
+            {
+                // Update hidden error using the weight (connection) instead of neuron output
+                hidden_error += deltas[layer + 1][j] * layers[layer + 1][j].connections[i];
+            }
+            // Use derivative of activation function
+            deltas[layer][i] = hidden_error * derivatives[layer](layers[layer][i].connections[0]);
         }
 
         if (layer == 0)
             break; // Stop at the input layer
     }
 
-    // Update weights and biases using deltas
+    // Update weights and biases using deltas (Gradient Descent)
     for (size_t layer = layers.size() - 1; layer > 0; layer--)
     {
         for (size_t i = 0; i < layers[layer].size(); i++)
         {
+            // Update weights (connections) using the deltas for each neuron
             for (size_t j = 0; j < layers[layer - 1].size(); j++)
-                // Update weights (connections)
-                layers[layer - 1][j].connections[0] -= settings.lr * deltas[layer][i] * layers[layer - 1][j].connections[0];
-            // Update biases
+            {
+                // Weight update rule: W = W - lr * delta * input
+                layers[layer][i].connections[j] -= settings.lr * deltas[layer][i] * layers[layer - 1][j].connections[0];
+            }
+            // Update biases using delta
             layers[layer][i].bias -= settings.lr * deltas[layer][i];
         }
     }
 
-    return error;
+    return error / output.size();  // Return the average error (MSE)
 }
 
 void NeuralNetwork::addLayer(size_t size, string activation)
@@ -155,24 +163,35 @@ void NeuralNetwork::addLayer(size_t size, string activation)
 
 double NeuralNetwork::run_round(size_t epochs, dataset_t dataset)
 {
-    // Train the network
+    // Train the network for each epoch
     for (size_t epoch = 0; epoch < epochs; epoch++)
     {
-        backpropagate(dataset.X_train[epoch % dataset.train_size], dataset.y_train[epoch % dataset.train_size]);
-        if (settings.lr > settings.lr_stop)
-            settings.lr -= settings.lr_decay;
+        // Shuffle dataset before each epoch
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::vector<size_t> indices(dataset.X_train.size());
+        std::iota(indices.begin(), indices.end(), 0);
+        std::shuffle(indices.begin(), indices.end(), g);
+
+        // Process the data in mini-batches
+        for (size_t i = 0; i < dataset.X_train.size(); i += settings.batchs)
+        {
+            // Prepare the mini-batch
+            size_t batch_end = min(i + settings.batchs, dataset.X_train.size());
+            for (size_t j = i; j < batch_end; j++)
+                backpropagate(dataset.X_train[indices[j]], dataset.y_train[indices[j]]);
+        }
     }
 
-    // Calculate average error
-    double error = 0.00;
-    vector<double> output;
+    // Calculate average absolute error for testing
+    double total_error = 0.0;
     for (size_t i = 0; i < dataset.X_test.size(); i++)
     {
-        output = forward(dataset.X_test[i]);
-        error = (error + calc_abs_error(output, dataset.X_test[i])) / 2;
+        vector<double> output = forward(dataset.X_test[i]);
+        total_error += calc_abs_error(output, dataset.y_test[i]);
     }
 
-    return error;
+    return total_error / dataset.X_test.size(); // Return average absolute error
 }
 
 double NeuralNetwork::calc_abs_error(vector<double> X, vector<double> y)
