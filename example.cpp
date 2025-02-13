@@ -1,6 +1,7 @@
 #include <iostream> // Console IO
 #include <chrono>   // For timing
-#include <AI.hpp>   // NeuralNetwork class (main NeuralNetwork)
+#include "../AI.hpp"   // AI class
+#include "../nn.hpp"   // NeuralNetwork class (main NeuralNetwork)
 
 using namespace std;
 
@@ -23,16 +24,11 @@ vector<vector<double>> y = {
 
 int main()
 {
-    train_settings.max_cores        = 4;     // Edit as needed
-    train_Settings.neuralnetworks   = 10000; // 10,000
-    train_settings.rounds           = 100;   // 100
-    train_settings.epochs_per_round = 10;    // 10
-    train_settings.max_drop         = 0.01;
+    train_settings.max_cores = 12;
+    train_settings.rounds = 100;
 
     try
     {
-        train_settings.rounds = 10;
-
         // Create the network
         AI nn(AI_settings);
         nn.addLayer(2, "tanh");
