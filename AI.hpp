@@ -20,7 +20,7 @@ typedef struct
     size_t rounds = 100;
     size_t epochs_per_round = 10;
     size_t max_cores = 4;
-    double max_drop = 0.01;
+    double max_drop = 0.02;
 } TrainSettings_t;
 
 class AI
@@ -40,6 +40,7 @@ public:
     void core_round(dataset_t dataset, TrainSettings_t tsettings, size_t start_idx, size_t end_idx, size_t i, vector<double>& local_best_errors, vector<size_t>& local_indices);
 
     double test(dataset_t dataset);
+    double test(NeuralNetwork nn, dataset_t dataset);
     void addLayer(size_t size, string activation);
     vector<double> forward(vector<double> input);
 };
