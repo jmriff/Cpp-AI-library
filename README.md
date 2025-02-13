@@ -10,12 +10,14 @@ This library help create simple AIs with many different activations, and train t
 | fsigmoid    (Fast sigmoid)          |
 
 For this test, I am using the XOR dataset (down below) and a intel i3-12th generation processor, with the example.cpp file. The lower the score the better (the score is really just the error of the network)
-| Rounds        | Speed (seconds)               | Score    |
-|---------------|-------------------------------|----------|
-| 10            | 02.73728741                    | 0.363387 |
-| 20            | 00.2802770                    | 0.338100 |
-| 50            | 02.5872500                    | 0.399083 |
-| 100           | 24.8647000                    | 0.376373 |
+| Rounds        | Speed (seconds)                | Score      |
+|---------------|--------------------------------|------------|
+| 10            | 02.73728741                    | 0.15859183 |
+| 20            | 06.48548568                    | 0.11744884 |
+| 50            | 16.08952836                    | 0.15907739 |
+| 100           | 34.42355963                    | 0.16801754 |
+
+*Sometimes, the AI does worse when it is trained longer, othertimes it does worse when trained for shorter periods of time, it depends on the AI structure, settings, dataset, and how to networks are initialized.
 
 XOR dataset:
 
