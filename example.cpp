@@ -1,7 +1,6 @@
 #include <iostream> // Console IO
 #include <chrono>   // For timing
-#include "../AI.hpp"   // AI class
-#include "../nn.hpp"   // NeuralNetwork class (main NeuralNetwork)
+#include <AI.hpp>   // AI class
 
 using namespace std;
 
