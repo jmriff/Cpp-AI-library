@@ -51,7 +51,7 @@ void AI::train(TrainSettings_t tsettings, dataset_t dataset)
         index = local_indices[distance(local_best_errors.begin(), min_element(local_best_errors.begin(), local_best_errors.end()))];
 
         // Debugging print for best_error after all threads complete
-        cout << "Round #" << round + 1 << " Completed | Best error: " << fixed << setprecision(8) << best_error << " | Population: " << nns.size() << endl;
+        cout << "Round #" << round + 1 << " Completed | Best error: " << fixed << setprecision(8) << test(nns[index], dataset) << " | Population: " << nns.size() << endl;
 
         // Check if we should revert to backup model based on error drop
         if (last_error - best_error > tsettings.max_drop)
@@ -64,6 +64,10 @@ void AI::train(TrainSettings_t tsettings, dataset_t dataset)
 
         // Update last_error for comparison in the next round
         last_error = best_error;
+
+        // Decay lr
+        if (settings.lr > settings.lr_stop)
+            settings.lr -= settings.lr_decay;
     }
 }
 
@@ -75,7 +79,7 @@ void AI::core_round(dataset_t dataset, TrainSettings_t tsettings, size_t start_i
     // Iterate over the subset of networks assigned to this thread
     for (size_t i = start_idx; i < end_idx; i++)
     {
-        double error = nns[i].run_round(tsettings.epochs_per_round, dataset); // Train network for a round
+        double error = nns[i].run_round(tsettings.epochs_per_round, dataset);
 
         // Update local_best_error and local_index if current network error is better
         if (error < local_best_error)
@@ -92,6 +96,18 @@ void AI::core_round(dataset_t dataset, TrainSettings_t tsettings, size_t start_i
 
 // Test method to evaluate network performance
 double AI::test(dataset_t dataset)
+{
+    double error = 0.00;
+    for (size_t i = 0; i < dataset.test_size; i++)
+    {
+        vector<double> output = nn.forward(dataset.X_test[i]);
+        for (size_t j = 0; j < dataset.X_test[0].size(); j++)  // Fix indexing of dataset.X_test
+            error = (error + abs(output[j] - dataset.y_test[i][j])) / 2;
+    }
+    return error;
+}
+
+double AI::test(NeuralNetwork nn, dataset_t dataset)
 {
     double error = 0.00;
     for (size_t i = 0; i < dataset.test_size; i++)
