@@ -20,7 +20,7 @@ typedef struct
     size_t rounds = 100;
     size_t epochs_per_round = 10;
     size_t max_cores = 4;
-    double max_drop = 0.02;
+    double max_drop = 0.01;
 } TrainSettings_t;
 
 class AI
