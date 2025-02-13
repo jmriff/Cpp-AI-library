@@ -17,7 +17,7 @@ For this test, I am using the XOR dataset (down below) and a intel i3-12th gener
 | 50            | 16.08952836                    | 0.15907739 |
 | 100           | 34.42355963                    | 0.16801754 |
 
-*Sometimes, the AI does worse when it is trained longer, othertimes it does worse when trained for shorter periods of time, it depends on the AI structure, settings, dataset, and how to networks are initialized.
+*Sometimes, the AI does worse when it is trained longer, othertimes it does worse when trained for shorter periods of time, it depends on the AI structure, settings, dataset, and how the networks are initialized.
 
 XOR dataset:
 
@@ -31,7 +31,7 @@ XOR dataset:
 Installation
 ------------
 
-To install library, just run the install.sh script or Linux, and the install.bat script for Windows, and it will compile the file and install it on to your system, so when you use it, just add -lAI as a compiler flag.
+To install library, just run the install.sh script or Linux (Sorry Windows users, the library currently support easy installation, such as a install.sh file, you will have to cmake and install the files yourselves), and it will compile the file and install it on to your system, so when you use it, just add -lAI as a compiler flag.
 
 Example compilation:
 g++ example.cpp -o example -lAI
