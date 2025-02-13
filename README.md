@@ -1,9 +1,6 @@
 C++ AI Library
 
-This library help create simple AIs with many different activations, and train them. After some testing, I found this library is faster than a C version of the same
-library.
-
-* The AI.hpp and AI.cpp files are buggy, and not working at the moment, if you see the issue, I would be glad if someone could send me the fixed files
+This library help create simple AIs with many different activations, and train them.
 
 | Supported activations               |
 |-------------------------------------|
@@ -13,12 +10,12 @@ library.
 | fsigmoid    (Fast sigmoid)          |
 
 For this test, I am using the XOR dataset (down below) and a intel i3-12th generation processor, with the example.cpp file. The lower the score the better (the score is really just the error of the network)
-| Epochs        | Speed (seconds)               | Score    |
+| Rounds        | Speed (seconds)               | Score    |
 |---------------|-------------------------------|----------|
-| 10,000        | 00.0280812                    | 0.363387 |
-| 100,000       | 00.2802770                    | 0.338100 |
-| 1,000,000     | 02.5872500                    | 0.399083 |
-| 10,000,000    | 24.8647000                    | 0.376373 |
+| 10            | 02.73728741                    | 0.363387 |
+| 20            | 00.2802770                    | 0.338100 |
+| 50            | 02.5872500                    | 0.399083 |
+| 100           | 24.8647000                    | 0.376373 |
 
 XOR dataset:
 
