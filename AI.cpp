@@ -51,7 +51,7 @@ void AI::train(TrainSettings_t tsettings, dataset_t dataset)
         index = local_indices[distance(local_best_errors.begin(), min_element(local_best_errors.begin(), local_best_errors.end()))];
 
         // Debugging print for best_error after all threads complete
-        cout << "Round #" << round << " Completed | Best error: " << fixed << setprecision(8) << best_error << " | Population: " << nns.size() << endl;
+        cout << "Round #" << round + 1 << " Completed | Best error: " << fixed << setprecision(8) << best_error << " | Population: " << nns.size() << endl;
 
         // Check if we should revert to backup model based on error drop
         if (last_error - best_error > tsettings.max_drop)
