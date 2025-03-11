@@ -35,12 +35,9 @@ typedef struct
     double lr_decay = 0.001;
     double lr_stop = 0.005;
 
-    // Neural Network editing
-    double intensity = 0.01;
-
     // Etc
     size_t batchs = 32;
-} AISettings_t;
+} NNSettings_t;
 
 typedef struct
 {
@@ -50,17 +47,18 @@ typedef struct
 
 class NeuralNetwork
 {
-    AISettings_t settings;
+protected:
+    NNSettings_t settings;
     vector<vector<Neuron>> layers;                // Each layer contains a vector of Neurons
     vector<function<double(double)>> activations; // Stores activation functions
     vector<function<double(double)>> derivatives; // Stores derivatives of activation functions
 
 public:
     NeuralNetwork();
-    NeuralNetwork(AISettings_t settings);
+    NeuralNetwork(NNSettings_t settings);
 
     void addLayer(size_t size, string activation);
-    void config(AISettings_t settings);
+    void config(NNSettings_t settings);
 
     void edit(size_t seed, double intensity);
 
