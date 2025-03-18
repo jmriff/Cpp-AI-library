@@ -33,8 +33,4 @@ Installation
 
 To install library, just run the install.sh script on Linux/Mac OS (Sorry Windows users, the library currently doesn't support easy installation, such as a install.sh file, you will have to cmake and install the files yourselves), and it will compile the file and install it on to your system, so when you use it, just add -lAI as a compiler flag.
 
-Example compilation:
 g++ example.cpp -o example -lAI
-
-To run the example after compiling:
-./example
