@@ -89,3 +89,12 @@ uninstall: $(INCS)
 # Clean rule to remove build directory and library
 clean:
 	@rm -rf $(BUILD_DIR) $(USR_LIB)/$(LIB_NAME)
+
+help:
+	@echo "Usage:"
+	@echo "  make all or make      - Build the library"
+	@echo "  make clean            - Clean build files"
+	@echo "  make install          - Install the library"
+	@echo "  make uninstall        - Uninstall the library"
+	@echo "  make test TEST=<name> - Build and run a test (without .cpp extension)"
+	@echo "  make help             - Show this help message"
