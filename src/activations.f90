@@ -22,17 +22,23 @@ contains
       nn_sigmoid = 1/(1 + exp(-x))
    end function nn_sigmoid
 
-   double nn_fsigmoid(double x)
-   {
-   return x/(1 + fabs(x)); 
-   }
+   pure function nn_fsigmoid(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_fsigmoid
 
-   double nn_relu(double x)
-   {
-   return x*(x > 0); 
-   }
+      nn_fsigmoid = x/(1 + fabs(x))
+   end function nn_fsigmoid
 
-   //Derivative of activation functions
+   pure function nn_relu(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_relu
+
+      nn_relu = x*(x > 0)
+   end function nn_relu
+
+   ! Derivative of activation functions
    double nn_dtanh(double x)
    {
    return pow(1/cosh(x), 2); 
