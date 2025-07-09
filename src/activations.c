@@ -18,13 +18,13 @@ double nn_fsigmoid(double x)
 
 double nn_relu(double x)
 {
-    return x * (x > 0);
+    return x > 0 ? x : 0;
 }
 
 // Derivative of activation functions
 double nn_dtanh(double x)
 {
-    return pow(1 / cosh(x), 2);
+    return 1 / pow(cosh(x), 2);
 }
 
 double nn_dsigmoid(double x)
@@ -35,7 +35,7 @@ double nn_dsigmoid(double x)
 
 double nn_dfsigmoid(double x)
 {
-    return 1 / pow((fabs(x) + 1), 2);
+    return 1 / (x * x + 2 * fabs(x) + 1);
 }
 
 double nn_drelu(double x)

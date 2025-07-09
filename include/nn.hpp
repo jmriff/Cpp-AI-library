@@ -55,13 +55,6 @@ typedef struct
     double bias;                     // Bias term
 } Neuron;
 
-typedef enum ErrorMeasure
-{
-    ERROR_MEASURE_AVG = 0,  // Average the dataset error
-    ERROR_MEASURE_MSE = 1,  // Mean Square Error
-    ERROR_MEASURE_MAE = 2   // Mean Absolute Error
-} ErrorMeasure;
-
 class NeuralNetwork
 {
     std::vector<std::vector<Neuron>> layers; // Each layer contains a vector of Neurons
@@ -73,13 +66,11 @@ class NeuralNetwork
     bool bar;
 
 public:
-    NeuralNetwork(ErrorMeasure merr=ERROR_MEASURE_MSE, bool progressbar=true);;
+    NeuralNetwork(ErrorMeasure merr=ERROR_MEASURE_MSE, bool progressbar=true);
     ~NeuralNetwork();
 
     void addLayer(int size, const char* activation);
     void config(ErrorMeasure merr);
-
-    void edit(int seed, double intensity);
 
     double backpropagate(std::vector<double> X, std::vector<double> y, TrainSettings_t* tset);
     double train(int epochs, dataset_t* pDataset, TrainSettings_t* tset);

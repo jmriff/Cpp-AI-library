@@ -23,9 +23,6 @@ Installation
 
 ```bash
 
-# Install make and compiling tools
-sudo apt install make gcc g++
-
 # Compile and install the library
 make
 sudo make install

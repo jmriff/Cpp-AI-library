@@ -42,12 +42,14 @@ double NeuralNetwork::calc_error(dataset_t* pDataset)
     {
         std::vector<double> output = this->forward(pDataset->X_test[i]);
 
-        if (this->merr == ERROR_MEASURE_AVG)
-            error = 0;
-        else if (merr == ERROR_MEASURE_MAE)
+         if (merr == ERROR_MEASURE_MAE)
             error = (error + calc_mae(output.data(), pDataset->y_test[i].data())) / 2;
         else if (merr == ERROR_MEASURE_MSE)
             error = (error + calc_mse(output.data(), pDataset->y_test[i].data())) / 2;
+        else if (merr == ERROR_MEASURE_BCE)
+            error = (error + calc_bce(output.data(), (int *)pDataset->y_test[i].data())) / 2;
+        else if (merr == ERROR_MEASURE_CCE)
+            error = (error + calc_cce(output.data(), (int *)pDataset->y_test[i].data(), pDataset->y_test[i].size())) / 2;
         
         // Default to MSE
         else error = (error + calc_mse(output.data(), pDataset->y_test[i].data())) / 2;
@@ -69,12 +71,17 @@ double NeuralNetwork::calc_error(dataset_t* pDataset)
  */
 double NeuralNetwork::calc_error(std::vector<double> predict, std::vector<double> real)
 {
-    if (this->merr == ERROR_MEASURE_AVG)
-        return 0;
-    else if (merr == ERROR_MEASURE_MAE)
+    if (predict.size() != real.size())
+        throw NNerror("Predict and real vectors must be of the same size");
+    
+    if (merr == ERROR_MEASURE_MAE)
         return calc_mae(predict.data(), real.data());
     else if (merr == ERROR_MEASURE_MSE)
         return calc_mse(predict.data(), real.data());
+    else if (merr == ERROR_MEASURE_BCE)
+        return calc_bce(predict.data(), (int *)real.data());
+    else if (merr == ERROR_MEASURE_CCE)
+        return calc_cce(predict.data(), (int *)real.data(), real.size());
         
     // Default to MSE
     else return calc_mse(predict.data(), real.data());
@@ -158,7 +165,7 @@ double NeuralNetwork::backpropagate(std::vector<double> X, std::vector<double> y
     std::vector<double> output = this->forward(X);
 
     // Compute error using Mean Squared Error (MSE)
-    error = this->calc_error(X, y);
+    error = this->calc_error(y, output) * y.size();
 
     // Initialize deltas for each layer
     std::vector<std::vector<double>> deltas(layers.size());
@@ -313,37 +320,6 @@ void NeuralNetwork::addLayer(int size, const char* activation)
     }
 
     layers.push_back(new_layer);
-}
-
-void NeuralNetwork::edit(int seed, double intensity)
-{
-    srand(seed); // Initialize random seed
-
-    // Generate random number between (-intensity / 2) and (intensity / 2)
-    double random = (static_cast<double>(rand() - (int)(RAND_MAX / 2)) / RAND_MAX) * intensity;
-
-    // Edit connections
-    for (int i = 0; i < (int)layers.size(); i++)
-    {
-        for (int j = 0; j < (int)layers[i].size(); j++)
-        {
-            // Check to ensure that connections are valid
-            if (layers[i][j].connections.size() > 0)
-            {
-                int rand_index = rand() % layers[i][j].connections.size(); // Pick a random connection
-                layers[i][j].connections[rand_index] *= random;               // Apply mutation
-            }
-        }
-    }
-
-    // Edit biases
-    for (int i = 0; i < (int)layers.size(); i++)
-    {
-        for (int j = 0; j < (int)layers[i].size(); j++)
-        {
-            layers[i][j].bias *= -random; // Mutate bias
-        }
-    }
 }
 
 /*

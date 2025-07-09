@@ -32,18 +32,16 @@ int main(int argc, char** argv)
 
         dataset_t* pDataset = createDataset(X, y, 0, 1);
 
-        tset.lr       = 0.05;
-        tset.lr_decay = 0.0003;
+        tset.lr       = 0.10;
+        tset.lr_decay = 0.001;
         tset.lr_stop  = 0.01;
         tset.batchSize = 2;
 
         pNN->addLayer(2, "tanh");
-        pNN->addLayer(10, "tanh");
-        pNN->addLayer(10, "tanh");
-        pNN->addLayer(10, "tanh");
+        pNN->addLayer(3, "tanh");
         pNN->addLayer(1, "tanh");
 
-        pNN->train(300000, pDataset, &tset);
+        pNN->train(500000, pDataset, &tset);
 
         std::vector<double> errors = {};
         std::vector<std::vector<double>> out;
