@@ -9,15 +9,18 @@ extern "C"
 {
 #endif
 
-// MSE (Mean Square Error)
-// predit: Model predition for output
-// real:   Actual anwser to problem
-double calc_mse(double* predict, double* real);
+typedef enum ErrorMeasure
+{
+    ERROR_MEASURE_MAE = 1,   // Mean Absolute Error
+    ERROR_MEASURE_MSE = 0,  // Mean Square Error
+    ERROR_MEASURE_BCE = 2,  // Binary Cross-Entropy
+    ERROR_MEASURE_CCE = 3  // Categorical Cross-Entropy
+} ErrorMeasure;
 
-// MAE (Mean Absolute Error)
-// predit: Model predition for output
-// real:   Actual anwser to problem
 double calc_mae(double* predict, double* real);
+double calc_mse(double* predict, double* real);
+double calc_bce(double* predict, int* real);
+double calc_cce(double* predict, int* real, int num_classes);
 
 #ifdef __cplusplus
 }
