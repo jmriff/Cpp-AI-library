@@ -25,6 +25,7 @@
 
 #include "activations.h"
 #include "nnerrors.h"
+#include "nnmemory.hpp"
 
 typedef struct
 {
@@ -62,6 +63,8 @@ class NeuralNetwork
     std::vector<double(*)(double)> derivatives; // Stores derivatives of activation functions
 
     ErrorMeasure merr;
+
+    MemoryPool NNPool; // Memory pool for efficient memory management
 
     bool bar;
 

@@ -1,8 +1,19 @@
 #include "nn.hpp"
 
 // Constructor initializes the neural network with settings
-NeuralNetwork::NeuralNetwork(ErrorMeasure merr, bool progressbar) : merr(merr), bar(progressbar)
-{}
+NeuralNetwork::NeuralNetwork(ErrorMeasure merr, bool progressbar)
+{
+    this->merr = merr;
+    this->bar = progressbar;
+
+    // Initialize the memory pool with a default size
+    this->NNPool = new MemoryPool(1024 * 1024); // 1 MB pool size, can be adjusted as needed
+
+    
+    
+    // Set the error measure
+    this->config(merr);
+}
 
 NeuralNetwork::~NeuralNetwork()
 {}
