@@ -39,16 +39,23 @@ contains
    end function nn_relu
 
    ! Derivative of activation functions
-   double nn_dtanh(double x)
-   {
-   return pow(1/cosh(x), 2); 
-   }
+   pure function nn_dtanh(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_dtanh
 
-   double nn_dsigmoid(double x)
-   {
-   double sig = nn_sigmoid(x); 
-   return sig*(1 - sig); 
-   }
+      nn_dtanh = pow(1/cosh(x), 2)
+   end function nn_dtanh
+
+   pure function nn_dsigmoid(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_dsigmoid
+      REAL :: sig
+
+      sig = nn_sigmoid(x); 
+      nn_dsigmoid = sig*(1 - sig)
+   end function nn_sigmoid
 
    double nn_dfsigmoid(double x)
    {
