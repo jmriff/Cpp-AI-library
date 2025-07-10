@@ -6,65 +6,84 @@ module activations
 
 contains
 
-    ! Activation functions
 
-    pure function nn_tanh(x)
-        implicit none
-        real, intent(in) :: x
-        real :: nn_tanh
+! Activation functions
 
-        nn_tanh = tanh(x)
-    end function nn_tanh
+   pure function nn_tanh(x)
+      implicit none
+      real, intent(in) :: x
+      real :: nn_tanh
 
-    pure function nn_sigmoid(x)
-        implicit none
-        real, INTENT(IN) :: x
-        REAL :: nn_sigmoid
+      nn_tanh = tanh(x)
+   end function nn_tanh
 
-        nn_sigmoid = 1/(1 + exp(-x))
-    end function nn_sigmoid
+   pure function nn_sigmoid(x)
+      implicit none
+      real, INTENT(IN) :: x
+      REAL :: nn_sigmoid
 
-    pure function nn_fsigmoid(x)
-        implicit none
-        REAL, INTENT(IN) :: x
-        REAL :: nn_fsigmoid
+      nn_sigmoid = 1.0/(1.0 + exp(-x))
+   end function nn_sigmoid
 
-        nn_fsigmoid = x/(1 + abs(x))
-    end function nn_fsigmoid
+   pure function nn_fsigmoid(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_fsigmoid
 
-    pure function nn_relu(x)
-        implicit none
-        REAL, INTENT(IN) :: x
-        REAL :: nn_relu
+      nn_fsigmoid = x/(1.0 + abs(x))
+   end function nn_fsigmoid
 
-        ! f3fe-hash's temporary fix, optimize it possible
-        if (x > 0) then
-            nn_relu = x
-        else
-            nn_relu = 0
-        end if
-    end function nn_relu
+   pure function nn_relu(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_relu
+
+      !  nn_relu = x*(x > 0)
+      if (x > 0) then
+         nn_relu = x
+      else
+         nn_relu = 0.0
+      end if
+   end function nn_relu
 
    ! Derivative of activation functions
-   !double nn_dtanh(double x)
-   !{
-   !return pow(1/cosh(x), 2); 
-   !}
+   pure function nn_dtanh(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_dtanh
 
-   !double nn_dsigmoid(double x)
-   !{
-   !double sig = nn_sigmoid(x); 
-   !return sig*(1 - sig); 
-   !}
+      ! nn_dtanh = pow(1/cosh(x), 2)
+      nn_dtanh = (1.0/COSH(X))**2
+   end function nn_dtanh
 
-   !double nn_dfsigmoid(double x)
-   !{
-   !return 1/pow((fabs(x) + 1), 2); 
-   !}
+   pure function nn_dsigmoid(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_dsigmoid
+      REAL :: sig
 
-   !double nn_drelu(double x)
-   !{
-   !return(x > 0) ?1.0:0.0; 
-   !}
+      sig = nn_sigmoid(x)
+      nn_dsigmoid = sig*(1.0 - sig)
+   end function nn_dsigmoid
 
+   pure function nn_dfsigmoid(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_dfsigmoid
+
+      nn_dfsigmoid = 1.0/((abs(x) + 1.0)**2)
+   end function nn_dfsigmoid
+
+   pure function nn_drelu(x)
+      implicit none
+      REAL, INTENT(IN) :: x
+      REAL :: nn_drelu
+
+      ! nn_drelu = (x > 0) ?1.0:0.0
+      if (x > 0) then
+         nn_drelu = 1.0
+      else
+         nn_drelu = 0.0
+      end if
+   end function nn_drelu
 end module activations
