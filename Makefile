@@ -1,15 +1,17 @@
-# Define compiler and flags
+# Define compilers and linkers
 CC         := gcc
 CXX        := g++
 GFORT      := gfortran
 LD         := ld
+
+# Define the compilers' and linker's flags
 CFLAGS     := -fPIC -std=c11   #-Wall -Wextra
 CXXFLAGS   := -fPIC -std=c++11 #-Wall -Wextra
 GFORTFLAGS := -fPIC -std=f2008 #-Wall -Wextra
 LDFLAGS    := -shared -fPIC
 
 # Define directories
-BUILD_DIR := build
+BUILD_DIR := .build
 SRC_DIR   := src
 INC_DIR   := include
 
@@ -42,11 +44,13 @@ BLUE   = \033[34m
 BOLD  = \033[1m
 RESET = \033[0m
 
-.PHONY: all clean install uninstall
+.PHONY: all build help clean install uninstall
 
-all: $(LIB_NAME)
+all: help
 
-# Rule to create the build directory
+# Rule to build the object files
+build: $(BUILD_DIR) $(LIB_NAME)
+
 $(BUILD_DIR):
 	clear
 	@mkdir -p $(BUILD_DIR)
@@ -104,7 +108,7 @@ clean:
 
 help:
 	@echo "Usage:"
-	@echo "  make all or make      - Build the library"
+	@echo "  make build            - Build the library"
 	@echo "  make clean            - Clean build files"
 	@echo "  make install          - Install the library"
 	@echo "  make uninstall        - Uninstall the library"
