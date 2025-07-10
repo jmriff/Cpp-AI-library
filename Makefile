@@ -86,7 +86,7 @@ test: $(LIB_NAME) $(C_OBJS)
 		exit 1; \
 	fi; \
 	$(CXX) $(CXXFLAGS) tests/$(TEST).cpp $(C_OBJS) -lAI -o $(BUILD_DIR)/$(TEST).test
-	@./build/$(TEST).test || { \
+	@./$(BUILD_DIR)/$(TEST).test || { \
 		echo "Test failed"; \
 		exit 1; \
 	}
