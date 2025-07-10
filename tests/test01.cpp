@@ -78,6 +78,8 @@ int main(int argc, char** argv)
             std::cout << " (" << errors[i] * 100 << "%" << ")" << std::endl;
         }
 
+        std::cout << std::endl << "Test Passed" << std::endl;
+
         delete pNN;
         delete pDataset;
         return 0;
@@ -85,11 +87,13 @@ int main(int argc, char** argv)
     catch (const NNerror& e)
     {
         std::cerr << "NNerror: " << e.what() << std::endl;
+        std::cout << std::endl << "Test Failed" << std::endl;
         return 1;
     }
     catch (const std::exception& e)
     {
         std::cerr << "std::exception: " << e.what() << std::endl;
+        std::cout << std::endl << "Test Failed" << std::endl;
         return 1;
     }
 }

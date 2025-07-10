@@ -1,17 +1,18 @@
-# Define compiler and flags
+# Define compilers and linkers
 CC         := gcc
 CXX        := g++
 GFORT      := gfortran
 LD         := ld
+
+# Define the compilers' and linker's flags
 CFLAGS     := -fPIC -std=c11   #-Wall -Wextra
 CXXFLAGS   := -fPIC -std=c++11 #-Wall -Wextra
 GFORTFLAGS := -fPIC -std=f2008 #-Wall -Wextra
 LDFLAGS    := -shared -fPIC
 
 # Define directories
-BUILD_DIR := build
+BUILD_DIR := .build
 SRC_DIR   := src
-FORT_DIR  := fort
 INC_DIR   := include
 
 USR_INCLUDE = /usr/local/include
@@ -22,10 +23,10 @@ AI = /usr/local/include/AI
 # Define source files and object files
 C_SRCS    = $(wildcard $(SRC_DIR)/*.c)
 CXX_SRCS  = $(wildcard $(SRC_DIR)/*.cpp)
-FORT_SRCS = $(wildcard $(FORT_DIR)/*.f90)
+FORT_SRCS = $(wildcard $(SRC_DIR)/*.f90)
 C_OBJS    = $(C_SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.c.o)
 CXX_OBJS  = $(CXX_SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.cpp.o)
-FORT_OBJS = $(FORT_SRCS:$(FORT_DIR)/%.f90=$(BUILD_DIR)/%.f90.o)
+FORT_OBJS = $(FORT_SRCS:$(SRC_DIR)/%.f90=$(BUILD_DIR)/%.f90.o)
 OBJS      = $(C_OBJS) $(CXX_OBJS) $(FORT_OBJS)
 
 # Includes
@@ -43,11 +44,13 @@ BLUE   = \033[34m
 BOLD  = \033[1m
 RESET = \033[0m
 
-.PHONY: all clean install uninstall
+.PHONY: all build help clean install uninstall
 
-all: $(LIB_NAME)
+all: help
 
-# Rule to create the build directory
+# Rule to build the object files
+build: $(BUILD_DIR) $(LIB_NAME)
+
 $(BUILD_DIR):
 	clear
 	@mkdir -p $(BUILD_DIR)
@@ -65,7 +68,7 @@ $(BUILD_DIR)/%.cpp.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	@printf "Done $(RESET)\n"
 
 # Rule to compile Fortran source files into object files
-$(BUILD_DIR)/%.f90.o: $(FORT_DIR)/%.f90 | $(BUILD_DIR)
+$(BUILD_DIR)/%.f90.o: $(SRC_DIR)/%.f90 | $(BUILD_DIR)
 	@printf "$(YELLOW)Building Fortran object $@... "
 	@$(GFORT) $(GFORTFLAGS) -I$(INC_DIR) -c $< -o $@
 	@printf "Done $(RESET)\n"
@@ -105,7 +108,7 @@ clean:
 
 help:
 	@echo "Usage:"
-	@echo "  make all or make      - Build the library"
+	@echo "  make build            - Build the library"
 	@echo "  make clean            - Clean build files"
 	@echo "  make install          - Install the library"
 	@echo "  make uninstall        - Uninstall the library"

@@ -1,8 +1,11 @@
+! TODO: Fix Fortran <-> C linkage with activations.f90 and activations.h
+
 module activations
 
    implicit none
 
 contains
+
 
 ! Activation functions
 
@@ -83,5 +86,4 @@ contains
          nn_drelu = 0.0
       end if
    end function nn_drelu
-
 end module activations
