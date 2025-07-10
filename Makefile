@@ -11,7 +11,6 @@ LDFLAGS    := -shared -fPIC
 # Define directories
 BUILD_DIR := build
 SRC_DIR   := src
-FORT_DIR  := fort
 INC_DIR   := include
 
 USR_INCLUDE = /usr/local/include
@@ -22,10 +21,10 @@ AI = /usr/local/include/AI
 # Define source files and object files
 C_SRCS    = $(wildcard $(SRC_DIR)/*.c)
 CXX_SRCS  = $(wildcard $(SRC_DIR)/*.cpp)
-FORT_SRCS = $(wildcard $(FORT_DIR)/*.f90)
+FORT_SRCS = $(wildcard $(SRC_DIR)/*.f90)
 C_OBJS    = $(C_SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.c.o)
 CXX_OBJS  = $(CXX_SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.cpp.o)
-FORT_OBJS = $(FORT_SRCS:$(FORT_DIR)/%.f90=$(BUILD_DIR)/%.f90.o)
+FORT_OBJS = $(FORT_SRCS:$(SRC_DIR)/%.f90=$(BUILD_DIR)/%.f90.o)
 OBJS      = $(C_OBJS) $(CXX_OBJS) $(FORT_OBJS)
 
 # Includes
@@ -65,7 +64,7 @@ $(BUILD_DIR)/%.cpp.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	@printf "Done $(RESET)\n"
 
 # Rule to compile Fortran source files into object files
-$(BUILD_DIR)/%.f90.o: $(FORT_DIR)/%.f90 | $(BUILD_DIR)
+$(BUILD_DIR)/%.f90.o: $(SRC_DIR)/%.f90 | $(BUILD_DIR)
 	@printf "$(YELLOW)Building Fortran object $@... "
 	@$(GFORT) $(GFORTFLAGS) -I$(INC_DIR) -c $< -o $@
 	@printf "Done $(RESET)\n"
