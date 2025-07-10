@@ -37,9 +37,9 @@ int main(int argc, char** argv)
         tset.lr_stop  = 0.01;
         tset.batchSize = 2;
 
-        pNN->addLayer(2, "tanh");
-        pNN->addLayer(3, "tanh");
-        pNN->addLayer(1, "tanh");
+        pNN->addLayer(2, "relu");
+        pNN->addLayer(3, "relu");
+        pNN->addLayer(1, "relu");
 
         pNN->train(500000, pDataset, &tset);
 
